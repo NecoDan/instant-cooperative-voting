@@ -1,6 +1,7 @@
 package br.com.ntconsultant.instant.cooperative.voting.controller.api;
 
 import br.com.ntconsultant.instant.cooperative.voting.dto.PautaModel;
+import br.com.ntconsultant.instant.cooperative.voting.exceptions.PautaException;
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
 import br.com.ntconsultant.instant.cooperative.voting.service.IPautaService;
 import lombok.RequiredArgsConstructor;
@@ -53,12 +54,14 @@ public class PautaHandler {
     // @ApiOperation(value = "Call to create pauta.", response = PautaModel.class)
     public Mono<ServerResponse> save(ServerRequest request) {
         final Mono<Pauta> pauta = request.bodyToMono(Pauta.class);
-        final Mono<Pauta> pautaSave = pauta.flatMap(pautaService::save);
+        final Mono<Pauta> pautaSave = pauta.flatMap(pautaService::save)
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new PautaException(""))));
 
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(pautaSave.map(this::toPautaModelCreate)
-                        .map(pautaResponse -> ResponseEntity.status(HttpStatus.CREATED).body(pautaResponse))
+                        .map(pautaResponse -> ResponseEntity.status(HttpStatus.CREATED)
+                                .body(pautaResponse))
                         .doOnSuccess(pautaResponse -> log.info("Pauta criada com sucesso!")), PautaModel.class);
     }
 

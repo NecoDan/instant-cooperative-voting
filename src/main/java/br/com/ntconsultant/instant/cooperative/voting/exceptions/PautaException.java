@@ -2,8 +2,11 @@ package br.com.ntconsultant.instant.cooperative.voting.exceptions;
 
 import lombok.NoArgsConstructor;
 
+/**
+ * @author Daniel Santos
+ */
 @NoArgsConstructor
-public class PautaException extends Exception {
+public class PautaException extends RuntimeException {
     public PautaException(String s) {
         super(s);
     }

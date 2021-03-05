@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.Instant;
+
 /**
  * @author Daniel Santos
  */
@@ -12,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class PautaModelRequest {
-    private String titulo;
+public class OpeningSessionRequest {
+    private Instant begin;
+    private Instant end;
 }

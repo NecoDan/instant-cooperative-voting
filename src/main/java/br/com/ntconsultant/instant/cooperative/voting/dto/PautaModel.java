@@ -7,6 +7,9 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author Daniel Santos
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

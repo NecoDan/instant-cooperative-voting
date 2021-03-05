@@ -2,6 +2,9 @@ package br.com.ntconsultant.instant.cooperative.voting.exceptions;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * @author Daniel Santos
+ */
 public class PautaNotFoundException extends HttpException {
 
     public PautaNotFoundException(String message) {

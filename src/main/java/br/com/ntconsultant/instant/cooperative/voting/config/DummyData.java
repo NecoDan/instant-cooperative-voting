@@ -43,7 +43,7 @@ public class DummyData implements CommandLineRunner {
     private Pauta obterPautaPor(String titulo) {
         return Pauta.builder()
                 .id(UUID.randomUUID().toString())
-                .titulo(titulo)
+                .title(titulo)
                 .dt(LocalDateTime.now())
                 .session(null)
                 .build();

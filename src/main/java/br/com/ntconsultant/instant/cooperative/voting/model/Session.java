@@ -15,10 +15,18 @@ import java.util.List;
 @Document
 @Data
 @Builder
-public class Session {
+public class Session implements InitializeEndSession {
     @Id
     private String id;
-    private Instant fim;
+    private Instant end;
     private LocalDateTime dt;
     private List<Vote> votes;
+
+    public static Session iniciar(Instant end) {
+        return Session.builder().end(InitializeEndSession.iniciar(end)).build();
+    }
+
+    boolean isFinalizada() {
+        return Instant.now().isAfter(end);
+    }
 }

@@ -1,11 +1,13 @@
 package br.com.ntconsultant.instant.cooperative.voting.service;
 
+import br.com.ntconsultant.instant.cooperative.voting.events.PautaCreatedEvent;
 import br.com.ntconsultant.instant.cooperative.voting.exceptions.PautaException;
 import br.com.ntconsultant.instant.cooperative.voting.exceptions.PautaNotFoundException;
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
 import br.com.ntconsultant.instant.cooperative.voting.repository.PautaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,6 +23,7 @@ import java.util.Objects;
 public class PautaService implements IPautaService {
 
     private final PautaRepository pautaRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public Flux<Pauta> findAll() {
@@ -34,11 +37,12 @@ public class PautaService implements IPautaService {
     }
 
     @Override
-    public Mono<Pauta> save(Pauta pauta) throws PautaException{
+    public Mono<Pauta> save(Pauta pauta) throws PautaException {
         if (Objects.isNull(pauta))
             throw new PautaException("Algum errro");
 
-        pauta.gerarDtLancamento();
-        return this.pautaRepository.save(pauta);
+        pauta.generateDtRelease();
+        return this.pautaRepository.save(pauta)
+                .doOnSuccess(profile -> this.eventPublisher.publishEvent(new PautaCreatedEvent(pauta)));
     }
 }
