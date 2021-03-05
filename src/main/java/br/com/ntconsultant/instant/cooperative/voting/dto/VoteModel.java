@@ -1,12 +1,10 @@
 package br.com.ntconsultant.instant.cooperative.voting.dto;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 /**
@@ -16,9 +14,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@JsonRootName("Session")
-public class SessionModel {
+public class VoteModel {
     private String id;
-    private Instant end;
+    private String idVoter;
+    private String voteType;
     private LocalDateTime dt;
 }

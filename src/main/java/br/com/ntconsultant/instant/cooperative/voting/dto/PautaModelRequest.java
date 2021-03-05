@@ -13,5 +13,5 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class PautaModelRequest {
-    private String titulo;
+    private String title;
 }

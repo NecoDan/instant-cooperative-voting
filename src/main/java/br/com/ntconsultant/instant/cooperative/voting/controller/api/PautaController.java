@@ -1,10 +1,12 @@
 package br.com.ntconsultant.instant.cooperative.voting.controller.api;
 
-import br.com.ntconsultant.instant.cooperative.voting.service.IPautaService;
+import br.com.ntconsultant.instant.cooperative.voting.dto.OpeningSessionRequest;
+import br.com.ntconsultant.instant.cooperative.voting.service.IGenerateVotingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 /**
  * @author Daniel Santos
@@ -14,5 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 public class PautaController {
-    private final IPautaService pautaService;
+
+    private final IGenerateVotingService generateVotingService;
+
+    @PostMapping("/opening-session/{idPauta}")
+    public Mono<ResponseEntity> openingSession(@PathVariable("idPauta") String idPauta,
+                                               @RequestBody OpeningSessionRequest openingSessionRequest) {
+        log.info("Pauta {} attempt to open session {}.", idPauta, openingSessionRequest);
+        return generateVotingService.openingSessionVoting(idPauta, openingSessionRequest.getEnd())
+                .map(it -> (ResponseEntity) ResponseEntity.ok().build())
+                .doOnSuccess(it -> log.info("Session in successfully.."));
+    }
 }

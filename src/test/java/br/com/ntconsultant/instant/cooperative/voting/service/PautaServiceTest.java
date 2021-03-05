@@ -79,11 +79,10 @@ class PautaServiceTest {
     @Test
     void save() {
         Pauta pauta = getPauta("Outra Pauta Qualquer");
-
-        Mono<Pauta> profileMono = this.pautaService.save(pauta);
+        Mono<Pauta> pautaSaved = this.pautaService.save(pauta);
 
         StepVerifier
-                .create(profileMono)
+                .create(pautaSaved)
                 .expectNextMatches(saved -> StringUtils.hasText(saved.getId()))
                 .verifyComplete();
     }

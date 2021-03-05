@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @ToString
 public class PautaModel {
     private String id;
-    private String titulo;
+    private String title;
     private SessionModel sessionModel;
     private LocalDateTime dt;
 }

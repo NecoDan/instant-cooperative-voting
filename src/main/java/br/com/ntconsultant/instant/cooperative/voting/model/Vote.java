@@ -1,6 +1,6 @@
 package br.com.ntconsultant.instant.cooperative.voting.model;
 
-import br.com.ntconsultant.instant.cooperative.voting.enums.TipoVoto;
+import br.com.ntconsultant.instant.cooperative.voting.enums.VoteType;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Vote {
     @Id
     private String id;
-    private String idEleitor;
-    private TipoVoto tipoVoto;
+    private String idVoter;
+    private VoteType voteType;
     private LocalDateTime dt;
 }

@@ -15,6 +15,5 @@ import java.time.Instant;
 @NoArgsConstructor
 @ToString
 public class OpeningSessionRequest {
-    private Instant begin;
     private Instant end;
 }

@@ -1,6 +1,7 @@
 package br.com.ntconsultant.instant.cooperative.voting.controller.api;
 
 import br.com.ntconsultant.instant.cooperative.voting.dto.PautaModel;
+import br.com.ntconsultant.instant.cooperative.voting.dto.SessionModel;
 import br.com.ntconsultant.instant.cooperative.voting.exceptions.PautaException;
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
 import br.com.ntconsultant.instant.cooperative.voting.service.IPautaService;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * @author Daniel Santos
@@ -66,7 +69,9 @@ public class PautaHandler {
     }
 
     private PautaModel toPautaModel(Pauta pauta) {
-        return this.modelMapper.map(pauta, PautaModel.class);
+        PautaModel pautaModel = this.modelMapper.map(pauta, PautaModel.class);
+        pautaModel.setSessionModel(Objects.isNull(pauta.getSession()) ? null : this.modelMapper.map(pauta.getSession(), SessionModel.class));
+        return pautaModel;
     }
 
     private PautaModel toPautaModelCreate(Pauta pauta) {
