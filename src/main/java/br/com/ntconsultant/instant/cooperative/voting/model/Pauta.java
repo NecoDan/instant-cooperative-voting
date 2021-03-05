@@ -1,5 +1,6 @@
 package br.com.ntconsultant.instant.cooperative.voting.model;
 
+import br.com.ntconsultant.instant.cooperative.voting.enums.TypeStatusSession;
 import br.com.ntconsultant.instant.cooperative.voting.exceptions.ExistingSessionException;
 import br.com.ntconsultant.instant.cooperative.voting.util.FormatterUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,14 +26,20 @@ import java.util.Optional;
 @Slf4j
 @Document(collection = "pauta")
 public class Pauta implements IGenerateReleaseDate {
+
     @Id
     private String id;
+
     private String title;
+
     private Session session;
-    private LocalDateTime dt;
+
+    private TypeStatusSession typeStatusSession;
+
+    private LocalDateTime dtCreated;
 
     public void generateDtRelease() {
-        this.dt = IGenerateReleaseDate.generateDtRelease();
+        this.dtCreated = IGenerateReleaseDate.generateDtRelease();
     }
 
     public Pauta generateDtReleaseThis() {
@@ -46,8 +53,18 @@ public class Pauta implements IGenerateReleaseDate {
         }
 
         session = Session.iniciar(fim);
-        log.info("Session: to open session {} with the date {}.", FormatterUtil.formatterLocalDateTimeFrom(session.getEnd()), FormatterUtil.formatterLocalDateTimeBy(session.getDt()));
+        log.info("Session: to open session {} with the date {}.", FormatterUtil.formatterLocalDateTimeFrom(session.getEnd()), FormatterUtil.formatterLocalDateTimeBy(session.getDtCreated()));
+        generateTypeStatusSession();
         return this;
+    }
+
+    public void generateTypeStatusSession() {
+        if (Objects.isNull(this.session)) {
+            this.typeStatusSession = TypeStatusSession.UNDEFINED;
+            return;
+        }
+
+        this.typeStatusSession = (isFinished()) ? TypeStatusSession.FINISHED : TypeStatusSession.OPENING;
     }
 
     public boolean isFinished() {
@@ -56,6 +73,13 @@ public class Pauta implements IGenerateReleaseDate {
                 .orElse(false);
     }
 
+    public boolean isOpeningType() {
+        return (Objects.nonNull(this.typeStatusSession) && this.typeStatusSession.isOpening());
+    }
+
+    public boolean isFinishedType() {
+        return (Objects.nonNull(this.typeStatusSession) && this.typeStatusSession.isFinished());
+    }
 
     @Override
     public String toString() {

@@ -14,9 +14,13 @@ import java.util.UUID;
 @Data
 @Builder
 public class Session implements InitializeEndSession, IGenerateReleaseDate {
+
     private String id;
+
     private Instant end;
-    private LocalDateTime dt;
+
+    private LocalDateTime dtCreated;
+
     private List<Vote> votes;
 
     public static Session iniciar(Instant end) {
@@ -32,7 +36,7 @@ public class Session implements InitializeEndSession, IGenerateReleaseDate {
     }
 
     public void generateDtRelease() {
-        this.dt = IGenerateReleaseDate.generateDtRelease();
+        this.dtCreated = IGenerateReleaseDate.generateDtRelease();
     }
 
     public Session generateDtReleaseThis() {

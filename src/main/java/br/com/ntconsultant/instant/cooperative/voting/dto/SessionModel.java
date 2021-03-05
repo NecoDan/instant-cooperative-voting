@@ -18,7 +18,10 @@ import java.time.LocalDateTime;
 @ToString
 @JsonRootName("Session")
 public class SessionModel {
+
     private String id;
+
     private Instant end;
+
     private LocalDateTime dt;
 }

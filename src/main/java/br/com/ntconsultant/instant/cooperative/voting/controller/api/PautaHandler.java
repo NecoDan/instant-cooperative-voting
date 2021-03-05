@@ -1,10 +1,10 @@
 package br.com.ntconsultant.instant.cooperative.voting.controller.api;
 
 import br.com.ntconsultant.instant.cooperative.voting.dto.PautaModel;
-import br.com.ntconsultant.instant.cooperative.voting.dto.SessionModel;
 import br.com.ntconsultant.instant.cooperative.voting.exceptions.PautaException;
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
-import br.com.ntconsultant.instant.cooperative.voting.service.IPautaService;
+import br.com.ntconsultant.instant.cooperative.voting.service.IGenerateVotingService;
+import br.com.ntconsultant.instant.cooperative.voting.service.IPautaReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,7 +26,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class PautaHandler {
 
-    private final IPautaService pautaService;
+    private final IGenerateVotingService generateVotingService;
+    private final IPautaReportService pautaReportService;
     private final ModelMapper modelMapper;
 
     // @ApiOperation(value = "Returns a list of all pautas.", response = PautaModel[].class)
@@ -35,7 +36,7 @@ public class PautaHandler {
         log.info("Searching all existing Pauta(s)...");
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(pautaService.findAll()
+                .body(pautaReportService.getAll()
                                 .map(this::toPautaModel)
                                 .doOnComplete(() -> log.info("Returning list of Pauta(s).")),
                         PautaModel.class);
@@ -48,7 +49,7 @@ public class PautaHandler {
 
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(pautaService.findById(id)
+                .body(pautaReportService.getOneBy(id)
                                 .map(this::toPautaModel)
                                 .doOnSuccess(p -> log.info("Returning a specific Pauta by {Id} =" + id)),
                         PautaModel.class);
@@ -57,7 +58,7 @@ public class PautaHandler {
     // @ApiOperation(value = "Call to create pauta.", response = PautaModel.class)
     public Mono<ServerResponse> save(ServerRequest request) {
         final Mono<Pauta> pauta = request.bodyToMono(Pauta.class);
-        final Mono<Pauta> pautaSave = pauta.flatMap(pautaService::save)
+        final Mono<Pauta> pautaSave = pauta.flatMap(generateVotingService::create)
                 .switchIfEmpty(Mono.defer(() -> Mono.error(new PautaException(""))));
 
         return ServerResponse.ok()
@@ -70,7 +71,7 @@ public class PautaHandler {
 
     private PautaModel toPautaModel(Pauta pauta) {
         PautaModel pautaModel = this.modelMapper.map(pauta, PautaModel.class);
-        pautaModel.setSessionModel(Objects.isNull(pauta.getSession()) ? null : this.modelMapper.map(pauta.getSession(), SessionModel.class));
+        pautaModel.setStatus((Objects.isNull(pauta.getTypeStatusSession())) ? "" : pauta.getTypeStatusSession().getCode());
         return pautaModel;
     }
 

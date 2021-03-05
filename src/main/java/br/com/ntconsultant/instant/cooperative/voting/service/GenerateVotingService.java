@@ -1,5 +1,7 @@
 package br.com.ntconsultant.instant.cooperative.voting.service;
 
+import br.com.ntconsultant.instant.cooperative.voting.exceptions.PautaException;
+import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
 import br.com.ntconsultant.instant.cooperative.voting.util.FormatterUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,16 @@ import java.util.Objects;
 public class GenerateVotingService implements IGenerateVotingService {
 
     private final IPautaService pautaService;
+
+    @Override
+    public Mono<Pauta> create(Pauta pauta) throws PautaException {
+        if (Objects.isNull(pauta))
+            throw new PautaException("Algum errro");
+
+        pauta.generateDtRelease();
+        pauta.generateTypeStatusSession();
+        return this.pautaService.save(pauta);
+    }
 
     @Override
     public Mono<Void> openingSessionVoting(String idPauta, Instant endSession) {

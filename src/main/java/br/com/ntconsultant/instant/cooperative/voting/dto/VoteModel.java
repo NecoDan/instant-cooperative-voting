@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
-
 /**
  * @author Daniel Santos
  */
@@ -15,8 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 public class VoteModel {
-    private String id;
-    private String idVoter;
+
     private String voteType;
-    private LocalDateTime dt;
+
+    private Integer totalVotes;
 }

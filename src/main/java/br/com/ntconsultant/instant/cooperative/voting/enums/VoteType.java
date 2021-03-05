@@ -10,6 +10,7 @@ import java.util.stream.Stream;
  * @author Daniel Santos
  */
 public enum VoteType {
+
     SIM("SIM", "1 - SIM"),
 
     NAO("NAO", "2 - NÃO");

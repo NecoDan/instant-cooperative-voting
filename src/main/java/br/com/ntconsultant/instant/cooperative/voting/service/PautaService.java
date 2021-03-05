@@ -38,10 +38,6 @@ public class PautaService implements IPautaService {
 
     @Override
     public Mono<Pauta> save(Pauta pauta) throws PautaException {
-        if (Objects.isNull(pauta))
-            throw new PautaException("Algum errro");
-
-        pauta.generateDtRelease();
         return this.pautaRepository.save(pauta)
                 .doOnSuccess(profile -> this.eventPublisher.publishEvent(new PautaCreatedEvent(pauta)));
     }

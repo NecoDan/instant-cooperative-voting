@@ -44,7 +44,7 @@ public class DummyData implements CommandLineRunner {
         return Pauta.builder()
                 .id(UUID.randomUUID().toString())
                 .title(titulo)
-                .dt(LocalDateTime.now())
+                .dtCreated(LocalDateTime.now())
                 .session(null)
                 .build();
     }
