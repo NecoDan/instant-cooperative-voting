@@ -28,7 +28,7 @@ public class Session implements InitializeEndSession, IGenerateReleaseDate {
     public static Session start(Instant end) {
         return Session.builder()
                 .id(UUID.randomUUID().toString())
-                .end(InitializeEndSession.iniciar(end))
+                .end(InitializeEndSession.start(end))
                 .build()
                 .generateDtCreatedThis();
     }
