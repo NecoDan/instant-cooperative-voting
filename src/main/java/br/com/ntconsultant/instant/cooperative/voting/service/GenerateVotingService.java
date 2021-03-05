@@ -70,29 +70,20 @@ public class GenerateVotingService implements IGenerateVotingService {
         }
 
         log.info("GenerateVotingService: Pauta {} tries to voting with {}.", idPauta, vote);
-        updateStatusEndSession(idPauta);
-
         return this.pautaService.findById(idPauta)
                 .map(pauta -> processVote(pauta, vote))
                 .flatMap(pautaService::save)
                 .then();
     }
 
-    private Mono<Void> updateStatusEndSession(String idPauta) {
-        return this.pautaService.findById(idPauta)
-                .map(this::processStatusEndSession)
-                .flatMap(pautaService::save)
-                .then();
-    }
-
-    public Pauta processStatusEndSession(Pauta pauta) {
+    private Pauta processStatusEndSession(Pauta pauta) {
         if (Objects.nonNull(pauta) && Objects.nonNull(pauta.getSession()) && pauta.getSession().isFinished()) {
             pauta.generateTypeStatusSession();
         }
         return pauta;
     }
 
-    public Pauta processVote(Pauta pauta, Vote vote) {
+    private Pauta processVote(Pauta pauta, Vote vote) {
         Session session = pauta.getSession();
 
         if (Objects.isNull(session)) {

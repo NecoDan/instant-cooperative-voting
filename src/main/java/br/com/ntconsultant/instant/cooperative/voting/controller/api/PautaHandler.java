@@ -1,7 +1,12 @@
 package br.com.ntconsultant.instant.cooperative.voting.controller.api;
 
 import br.com.ntconsultant.instant.cooperative.voting.dto.PautaModel;
+import br.com.ntconsultant.instant.cooperative.voting.dto.PermittedCpfVote;
+import br.com.ntconsultant.instant.cooperative.voting.enums.TypePermittedCpfVote;
 import br.com.ntconsultant.instant.cooperative.voting.exceptions.PautaException;
+import br.com.ntconsultant.instant.cooperative.voting.exceptions.PautaUnProcessableEntityException;
+import br.com.ntconsultant.instant.cooperative.voting.exceptions.ResourceStatusNotFoundException;
+import br.com.ntconsultant.instant.cooperative.voting.facade.ConsultCpFacade;
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
 import br.com.ntconsultant.instant.cooperative.voting.service.IGenerateVotingService;
 import br.com.ntconsultant.instant.cooperative.voting.service.IPautaReportService;
@@ -18,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author Daniel Santos
@@ -30,6 +36,7 @@ public class PautaHandler {
     private final IGenerateVotingService generateVotingService;
     private final IPautaReportService pautaReportService;
     private final ModelMapper modelMapper;
+    private final ConsultCpFacade consultCpFacade;
 
     // @ApiOperation(value = "Returns a list of all pautas.", response = PautaModel[].class)
 //    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returns a list of all pautas")})
@@ -60,7 +67,7 @@ public class PautaHandler {
     public Mono<ServerResponse> save(ServerRequest request) {
         final Mono<Pauta> pauta = request.bodyToMono(Pauta.class);
         final Mono<Pauta> pautaSave = pauta.flatMap(generateVotingService::create)
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new PautaException(""))));
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new PautaUnProcessableEntityException(pauta.toString()))));
 
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -69,6 +76,28 @@ public class PautaHandler {
                                 .body(pautaResponse))
                         .doOnSuccess(pautaResponse -> log.info("Pauta criada com sucesso!")), PautaModel.class);
     }
+
+    // @ApiOperation(value = "Call to create pauta.", response = PautaModel.class)
+    public Mono<ServerResponse> getCpfVoterPermitedVote(ServerRequest request) {
+        String cpf = request.pathVariable("cpf");
+        log.info("Searching for cpf is valid and enabled for voting by {}.", cpf);
+
+        final Optional<PermittedCpfVote> optPermittedCpfVote
+                = consultCpFacade.getTypePermittedCpfVote(cpf);
+
+        if (optPermittedCpfVote.isPresent()){
+            PermittedCpfVote permittedCpfVote = optPermittedCpfVote.get();
+
+            return Mono.just(TypePermittedCpfVote.of(permittedCpfVote.getStatus()))
+                    .flatMap(t -> ServerResponse.ok()
+                            .contentType(MediaType.APPLICATION_JSON).bodyValue(t))
+                    .doOnSuccess(t -> log.info("Returning {} is enabled for voting", cpf))
+                    .switchIfEmpty(ServerResponse.notFound().build());
+        }
+
+        return ServerResponse.notFound().build();
+    }
+
 
     private PautaModel toPautaModel(Pauta pauta) {
         PautaModel pautaModel = this.modelMapper.map(pauta, PautaModel.class);

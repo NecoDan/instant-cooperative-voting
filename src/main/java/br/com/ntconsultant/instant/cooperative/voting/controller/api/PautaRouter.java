@@ -25,6 +25,8 @@ public class PautaRouter {
                 .andRoute(GET(URI + "/{id}")
                         .and(accept(MediaType.APPLICATION_JSON)), handler::findById)
                 .andRoute(POST(URI)
-                        .and(accept(MediaType.APPLICATION_JSON)), handler::save);
+                        .and(accept(MediaType.APPLICATION_JSON)), handler::save)
+                .andRoute(GET(URI + "/consulted-cpf-permitted-vote/{cpf}")
+                        .and(accept(MediaType.APPLICATION_JSON)), handler::getCpfVoterPermitedVote);
     }
 }

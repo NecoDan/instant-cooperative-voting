@@ -5,10 +5,13 @@ import br.com.ntconsultant.instant.cooperative.voting.util.FormatterUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
@@ -22,6 +25,8 @@ import java.util.Optional;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Slf4j
 @Document(collection = "pauta")
 public class Pauta implements IGenerateReleaseDate {
@@ -33,9 +38,10 @@ public class Pauta implements IGenerateReleaseDate {
 
     private Session session;
 
-    private TypeStatusSession typeStatusSession;
-
     private LocalDateTime dtCreated;
+
+    @Transient
+    private TypeStatusSession typeStatusSession;
 
     public void generateDtCreated() {
         this.dtCreated = IGenerateReleaseDate.generateDtRelease();
@@ -56,6 +62,11 @@ public class Pauta implements IGenerateReleaseDate {
     public Pauta vote(Vote vote) {
         session.addVote(vote);
         return this;
+    }
+
+    public TypeStatusSession getTypeStatusSession() {
+        generateTypeStatusSession();
+        return this.typeStatusSession;
     }
 
     public void generateTypeStatusSession() {
