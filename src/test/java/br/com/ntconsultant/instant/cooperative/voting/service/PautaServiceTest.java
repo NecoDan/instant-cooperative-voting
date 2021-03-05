@@ -88,6 +88,6 @@ class PautaServiceTest {
     }
 
     private Pauta getPauta(String title) {
-        return Pauta.builder().title(title).build().generateDtReleaseThis();
+        return Pauta.builder().title(title).build().generateDtCreatedThis();
     }
 }

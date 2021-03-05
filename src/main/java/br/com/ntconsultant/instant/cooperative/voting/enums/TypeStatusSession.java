@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+/**
+ * @author Daniel Santos
+ */
 public enum TypeStatusSession {
 
     UNDEFINED("UNDEFINED", "0 - UNDEFINED"),

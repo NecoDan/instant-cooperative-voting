@@ -5,7 +5,9 @@ import lombok.Data;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -28,19 +30,36 @@ public class Session implements InitializeEndSession, IGenerateReleaseDate {
                 .id(UUID.randomUUID().toString())
                 .end(InitializeEndSession.iniciar(end))
                 .build()
-                .generateDtReleaseThis();
+                .generateDtCreatedThis();
     }
 
-    boolean isFinished() {
+    public boolean isFinished() {
         return Instant.now().isAfter(end);
     }
 
-    public void generateDtRelease() {
+    public void generateDtCreated() {
         this.dtCreated = IGenerateReleaseDate.generateDtRelease();
     }
 
-    public Session generateDtReleaseThis() {
-        generateDtRelease();
+    public Session generateDtCreatedThis() {
+        generateDtCreated();
         return this;
+    }
+
+    public boolean isRegisteredVoteForVoterBy(String idVoter) {
+        return (isExistsRegisteredVotes() && (votes.stream().anyMatch(voto -> voto.getIdVoter().equals(idVoter))));
+    }
+
+    public boolean isExistsRegisteredVotes() {
+        return (Objects.nonNull(this.votes));
+    }
+
+    public void addVote(Vote vote) {
+        if (Objects.isNull(this.votes))
+            this.votes = new ArrayList<>();
+
+        vote.generateId();
+        vote.generateDtCreated();
+        this.votes.add(vote);
     }
 }

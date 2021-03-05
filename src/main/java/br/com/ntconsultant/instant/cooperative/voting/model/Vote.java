@@ -1,17 +1,20 @@
 package br.com.ntconsultant.instant.cooperative.voting.model;
 
 import br.com.ntconsultant.instant.cooperative.voting.enums.VoteType;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * @author Daniel Santos
  */
 @Data
-@Builder
-public class Vote {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Vote implements IGenerateReleaseDate{
 
     private String id;
 
@@ -19,5 +22,18 @@ public class Vote {
 
     private VoteType voteType;
 
-    private LocalDateTime dt;
+    private LocalDateTime dtCreated;
+
+    public void generateId(){
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public void generateDtCreated() {
+        this.dtCreated = IGenerateReleaseDate.generateDtRelease();
+    }
+
+    public Vote generateDtCreatedThis() {
+        generateDtCreated();
+        return this;
+    }
 }

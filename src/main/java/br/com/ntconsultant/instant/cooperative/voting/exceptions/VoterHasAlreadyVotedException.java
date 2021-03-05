@@ -5,10 +5,10 @@ import org.springframework.http.HttpStatus;
 /**
  * @author Daniel Santos
  */
-public class ExistingSessionException extends HttpException {
+public class VoterHasAlreadyVotedException extends HttpException {
 
-    public ExistingSessionException(String message) {
-        super(String.format("There is already a voting session for the pauta: %S", message));
+    public VoterHasAlreadyVotedException(String message) {
+        super(String.format("Voter '%s' has already voted .", message));
     }
 
     @Override

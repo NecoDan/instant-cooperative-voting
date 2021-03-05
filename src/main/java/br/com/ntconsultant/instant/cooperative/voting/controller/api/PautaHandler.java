@@ -16,6 +16,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -72,6 +73,7 @@ public class PautaHandler {
     private PautaModel toPautaModel(Pauta pauta) {
         PautaModel pautaModel = this.modelMapper.map(pauta, PautaModel.class);
         pautaModel.setStatus((Objects.isNull(pauta.getTypeStatusSession())) ? "" : pauta.getTypeStatusSession().getCode());
+        pautaModel.generateVoteTotalizers(Objects.isNull(pauta.getSession()) ? Collections.emptyList() : pauta.getSession().getVotes());
         return pautaModel;
     }
 

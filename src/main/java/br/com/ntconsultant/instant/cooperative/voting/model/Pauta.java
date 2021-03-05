@@ -1,7 +1,6 @@
 package br.com.ntconsultant.instant.cooperative.voting.model;
 
 import br.com.ntconsultant.instant.cooperative.voting.enums.TypeStatusSession;
-import br.com.ntconsultant.instant.cooperative.voting.exceptions.ExistingSessionException;
 import br.com.ntconsultant.instant.cooperative.voting.util.FormatterUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,23 +37,24 @@ public class Pauta implements IGenerateReleaseDate {
 
     private LocalDateTime dtCreated;
 
-    public void generateDtRelease() {
+    public void generateDtCreated() {
         this.dtCreated = IGenerateReleaseDate.generateDtRelease();
     }
 
-    public Pauta generateDtReleaseThis() {
-        generateDtRelease();
+    public Pauta generateDtCreatedThis() {
+        generateDtCreated();
         return this;
     }
 
     public Pauta beginSession(Instant fim) {
-        if (Objects.nonNull(this.session)) {
-            throw new ExistingSessionException(id);
-        }
-
         session = Session.iniciar(fim);
         log.info("Session: to open session {} with the date {}.", FormatterUtil.formatterLocalDateTimeFrom(session.getEnd()), FormatterUtil.formatterLocalDateTimeBy(session.getDtCreated()));
         generateTypeStatusSession();
+        return this;
+    }
+
+    public Pauta vote(Vote vote) {
+        session.addVote(vote);
         return this;
     }
 
@@ -95,5 +95,4 @@ public class Pauta implements IGenerateReleaseDate {
 
         return jsonString;
     }
-
 }

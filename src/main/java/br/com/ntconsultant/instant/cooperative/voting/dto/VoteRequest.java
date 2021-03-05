@@ -1,5 +1,6 @@
 package br.com.ntconsultant.instant.cooperative.voting.dto;
 
+import br.com.ntconsultant.instant.cooperative.voting.enums.VoteType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class VoteModel {
-
-    private String voteType;
-
-    private Integer totalVotes;
+public class VoteRequest {
+    private String idVoter;
+    private VoteType voteType;
 }

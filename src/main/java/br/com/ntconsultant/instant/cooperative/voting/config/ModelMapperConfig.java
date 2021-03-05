@@ -1,10 +1,7 @@
 package br.com.ntconsultant.instant.cooperative.voting.config;
 
 
-import br.com.ntconsultant.instant.cooperative.voting.dto.PautaModel;
-import br.com.ntconsultant.instant.cooperative.voting.dto.PautaModelRequest;
-import br.com.ntconsultant.instant.cooperative.voting.dto.SessionModel;
-import br.com.ntconsultant.instant.cooperative.voting.dto.VoteModel;
+import br.com.ntconsultant.instant.cooperative.voting.dto.*;
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
 import br.com.ntconsultant.instant.cooperative.voting.model.Session;
 import br.com.ntconsultant.instant.cooperative.voting.model.Vote;
@@ -25,7 +22,7 @@ public class ModelMapperConfig {
         modelMapper.createTypeMap(Pauta.class, PautaModel.class);
         modelMapper.createTypeMap(PautaModelRequest.class, Pauta.class);
         modelMapper.createTypeMap(PautaModelRequest.class, PautaModel.class);
-        modelMapper.createTypeMap(Session.class, SessionModel.class);
+        modelMapper.createTypeMap(VoteRequest.class, Vote.class);
         return new ModelMapper();
     }
 }

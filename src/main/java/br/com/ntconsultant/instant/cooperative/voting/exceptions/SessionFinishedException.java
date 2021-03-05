@@ -5,10 +5,10 @@ import org.springframework.http.HttpStatus;
 /**
  * @author Daniel Santos
  */
-public class ExistingSessionException extends HttpException {
+public class SessionFinishedException extends HttpException {
 
-    public ExistingSessionException(String message) {
-        super(String.format("There is already a voting session for the pauta: %S", message));
+    public SessionFinishedException(String message) {
+        super(String.format("The session has been closed since: %s.", message));
     }
 
     @Override

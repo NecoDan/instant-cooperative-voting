@@ -41,4 +41,9 @@ public class PautaService implements IPautaService {
         return this.pautaRepository.save(pauta)
                 .doOnSuccess(profile -> this.eventPublisher.publishEvent(new PautaCreatedEvent(pauta)));
     }
+
+    @Override
+    public Mono<Pauta> update(Pauta pauta) {
+        return this.pautaRepository.insert(pauta);
+    }
 }
