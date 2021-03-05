@@ -38,8 +38,8 @@ public class PautaService implements IPautaService {
 
     @Override
     public Mono<Pauta> save(Pauta pauta) throws PautaException {
-        return this.pautaRepository.save(pauta)
-                .doOnSuccess(profile -> this.eventPublisher.publishEvent(new PautaCreatedEvent(pauta)));
+        return this.pautaRepository.save(pauta);
+//                .doOnSuccess(profile -> this.eventPublisher.publishEvent(new PautaCreatedEvent(pauta)));
     }
 
     @Override

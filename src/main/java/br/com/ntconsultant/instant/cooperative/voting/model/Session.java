@@ -25,7 +25,7 @@ public class Session implements InitializeEndSession, IGenerateReleaseDate {
 
     private List<Vote> votes;
 
-    public static Session iniciar(Instant end) {
+    public static Session start(Instant end) {
         return Session.builder()
                 .id(UUID.randomUUID().toString())
                 .end(InitializeEndSession.iniciar(end))

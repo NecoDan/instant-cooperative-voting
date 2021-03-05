@@ -47,7 +47,7 @@ public class Pauta implements IGenerateReleaseDate {
     }
 
     public Pauta beginSession(Instant fim) {
-        session = Session.iniciar(fim);
+        session = Session.start(fim);
         log.info("Session: to open session {} with the date {}.", FormatterUtil.formatterLocalDateTimeFrom(session.getEnd()), FormatterUtil.formatterLocalDateTimeBy(session.getDtCreated()));
         generateTypeStatusSession();
         return this;

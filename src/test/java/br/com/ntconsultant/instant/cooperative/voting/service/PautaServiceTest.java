@@ -1,93 +1,75 @@
 package br.com.ntconsultant.instant.cooperative.voting.service;
 
+import br.com.ntconsultant.instant.cooperative.voting.exceptions.PautaNotFoundException;
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
+import br.com.ntconsultant.instant.cooperative.voting.model.Session;
 import br.com.ntconsultant.instant.cooperative.voting.repository.PautaRepository;
-import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.util.StringUtils;
-import reactor.core.publisher.Flux;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
+import java.time.Instant;
 import java.util.UUID;
-import java.util.function.Predicate;
 
-@Log4j2
-@DataMongoTest
-@Import(PautaService.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+
+/**
+ * @author Daniel Santos
+ */
+@ExtendWith(MockitoExtension.class)
 class PautaServiceTest {
 
-    private final IPautaService pautaService;
-    private final PautaRepository pautaRepository;
+    @InjectMocks
+    private PautaService pautaService;
+    @Mock
+    private PautaRepository pautaRepository;
+    @Captor
+    private ArgumentCaptor<Pauta> pautaArgumentCaptor;
 
-    public PautaServiceTest(@Autowired IPautaService pautaService,
-                            @Autowired PautaRepository pautaRepository) {
-        this.pautaService = pautaService;
-        this.pautaRepository = pautaRepository;
-    }
-
-    @BeforeEach
-    void setUp() {
+    @Test
+    void deveSalvarUmaNovaPauta() {
+        Pauta pauta = getPautaWithoutSession("Votacao");
+        pautaService.save(pauta);
+        verify(pautaRepository, times(1)).save(pautaArgumentCaptor.capture());
+        assertEquals(pauta, pautaArgumentCaptor.getValue());
     }
 
     @Test
-    void findAll() {
-        Flux<Pauta> saved = this.pautaRepository.saveAll(Flux.just(
-                getPauta("Pauta 1"),
-                getPauta("Pauta 2"),
-                getPauta("Pauta 3"),
-                getPauta("Pauta 4")
-        ));
+    void deveBuscaPautaRetornarnoError() {
+        when(pautaRepository.findById(anyString()))
+                .thenReturn(Mono.empty());
 
-        Flux<Pauta> composite = pautaService.findAll().thenMany(saved);
-        Predicate<Pauta> match = pauta -> saved.any(saveItem -> saveItem.equals(pauta)).block();
-
-        StepVerifier
-                .create(composite)
-                .expectNextMatches(match)
-                .expectNextMatches(match)
-                .expectNextMatches(match)
-                .expectNextMatches(match)
-                .verifyComplete();
+        assertThrows(PautaNotFoundException.class,
+                () -> pautaService.findById(UUID.randomUUID().toString()).block()
+        );
     }
 
-    @Test
-    void findById() {
-        String id = UUID.randomUUID().toString();
-        String title = "Pauta qualquer";
-
-        Pauta pauta = getPauta(title);
-        pauta.setId(id);
-
-        Mono<Pauta> pautaCreated = this.pautaService
-                .save(pauta)
-                .flatMap(saved -> this.pautaService.findById(saved.getId()));
-
-        StepVerifier
-                .create(pautaCreated)
-                .expectNextMatches(p -> StringUtils.hasText(p.getId())
-                        && title.equalsIgnoreCase(p.getTitle())
-                        && id.equalsIgnoreCase(p.getId())
-                )
-                .verifyComplete();
+    public Pauta getPautaWithoutSession(String title) {
+        return Pauta.builder()
+                .id(UUID.randomUUID().toString())
+                .title(title)
+                .session(null)
+                .build()
+                .generateDtCreatedThis();
     }
 
-    @Test
-    void save() {
-        Pauta pauta = getPauta("Outra Pauta Qualquer");
-        Mono<Pauta> pautaSaved = this.pautaService.save(pauta);
-
-        StepVerifier
-                .create(pautaSaved)
-                .expectNextMatches(saved -> StringUtils.hasText(saved.getId()))
-                .verifyComplete();
+    public Pauta getPautaWithFinishedSession() {
+        Pauta pauta = getPautaWithoutSession("Nome");
+        pauta.setSession(Session.start(Instant.now().minusSeconds(10)));
+        return pauta;
     }
 
-    private Pauta getPauta(String title) {
-        return Pauta.builder().title(title).build().generateDtCreatedThis();
+    public Pauta getPautaWithyOpeningSession() {
+        Pauta pauta = getPautaWithoutSession("Nome");
+        pauta.setSession(Session.start(null));
+        return pauta;
     }
 }
