@@ -1,4 +1,4 @@
-package br.com.ntconsultant.instant.cooperative.voting.controller.api;
+package br.com.ntconsultant.instant.cooperative.voting.controller.api.pautas;
 
 import br.com.ntconsultant.instant.cooperative.voting.dto.OpeningSessionRequest;
 import br.com.ntconsultant.instant.cooperative.voting.dto.PautaModel;
@@ -6,6 +6,7 @@ import br.com.ntconsultant.instant.cooperative.voting.dto.VoteRequest;
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
 import br.com.ntconsultant.instant.cooperative.voting.model.Vote;
 import br.com.ntconsultant.instant.cooperative.voting.service.IGenerateVotingService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -29,6 +30,7 @@ public class PautaController {
     private final ModelMapper modelMapper;
 
     @PostMapping("/opening-session/{idPauta}")
+    @Operation(summary = "Starts a session on the specified pauta.", tags = "pautas")
     public Mono<ResponseEntity> openingSession(@PathVariable("idPauta") String idPauta,
                                                @RequestBody OpeningSessionRequest openingSessionRequest) {
         log.info("Pauta {} attempt to open session {}.", idPauta, openingSessionRequest);

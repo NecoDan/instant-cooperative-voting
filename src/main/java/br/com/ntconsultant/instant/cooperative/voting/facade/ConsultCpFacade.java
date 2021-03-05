@@ -1,6 +1,7 @@
 package br.com.ntconsultant.instant.cooperative.voting.facade;
 
 import br.com.ntconsultant.instant.cooperative.voting.dto.PermittedCpfVote;
+import br.com.ntconsultant.instant.cooperative.voting.exceptions.VoterNotFoundException;
 import br.com.ntconsultant.instant.cooperative.voting.properties.ApiProperties;
 import br.com.ntconsultant.instant.cooperative.voting.util.RestUtils;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +36,8 @@ public class ConsultCpFacade {
             return Optional.of(permittedCpfVote);
         }catch (Exception e){
             log.error("Error get permitted cpf to vote for cpf id | {}", cpf);
+            throw new VoterNotFoundException("Error get permitted cpf to vote for cpf" + cpf);
         }
-        return Optional.empty();
     }
 
     private HttpEntity<?> getParamCpfId(String cpf) {

@@ -1,4 +1,4 @@
-package br.com.ntconsultant.instant.cooperative.voting.controller.api;
+package br.com.ntconsultant.instant.cooperative.voting.controller.api.pautas;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,15 +18,13 @@ public class PautaRouter {
     private static final String URI = "/v1/pautas";
 
     @Bean
-    public RouterFunction<ServerResponse> route(PautaHandler handler) {
+    public RouterFunction<ServerResponse> routeVoters(PautaHandler handler) {
         return RouterFunctions
                 .route(GET(URI)
                         .and(accept(MediaType.APPLICATION_JSON)), handler::findAll)
                 .andRoute(GET(URI + "/{id}")
                         .and(accept(MediaType.APPLICATION_JSON)), handler::findById)
                 .andRoute(POST(URI)
-                        .and(accept(MediaType.APPLICATION_JSON)), handler::save)
-                .andRoute(GET(URI + "/consulted-cpf-permitted-vote/{cpf}")
-                        .and(accept(MediaType.APPLICATION_JSON)), handler::getCpfVoterPermitedVote);
+                        .and(accept(MediaType.APPLICATION_JSON)), handler::save);
     }
 }
