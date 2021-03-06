@@ -1,3 +1,4 @@
-FROM openjdk:8u171-alpine3.7
-COPY build/libs/*.jar app.jar
-CMD java ${JAVA_OPTS} -jar app.jar
+#FROM openjdk:8-jdk-alpine
+#MAINTAINER daniel.santos
+#COPY target/instant-cooperative-voting-1.0.jar instant-cooperative-voting-1.0.jar
+#ENTRYPOINT ["java","-jar","/instant-cooperative-voting-1.0.jar"]

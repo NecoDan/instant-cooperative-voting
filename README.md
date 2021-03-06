@@ -31,8 +31,17 @@
   - Banco de dados MongoDB;
      - ```Banco de dados orientado a documentos facil de escalar e com driver que suporta programação reativa.```
      
-  - Docker utilizando o compose;    
- 
+  - Docker utilizando o compose;<br><br>
+  
+  #### Instruções inicialização e execução - (aplicação e database)
+  ###### Utilizando docker-compose com MongoDB:
+   Executar comando ```docker-compose up``` inicializará uma instância do MongoDB, nesse momento será criado apenas uma collection denominado ```votacao``` no banco de dados. 
+  <br><br>Com a finalidade de gerenciar, registrar e efetuar as operações relacionadas as pautas/votações. Em seguida a aplicação do ```instant-cooperative-voting``` pode ser executada e inicializada.
+  <br> 
+  ###### Utilizando diretamente o jar:
+  ```mvn clean install```<br>
+  ```java -jar target/instant-cooperative-voting-1.0.jar```<br><br>
+   
   #### Endpoints: 
   
   Utilizando a ferramenta de documentação de endpoints ```Swagger```, pode-se visualizar todos os endpoints disponíveis. Basta acessar a documentação da API via [Swagger](http://localhost:8080/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config). 
@@ -45,7 +54,7 @@
     - `http://localhost:8080/v1/pautas/{id}`
       
  Entre outros, aos quais podem ser identificados no endereço fornecido pelo [Swagger](http://localhost:8080/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config).
-
+ <br><br>
 
   
  #### Autor e mantenedor do projeto
