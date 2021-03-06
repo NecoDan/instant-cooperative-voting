@@ -4,17 +4,7 @@
    
   Uma solução criada, utilizando a tecnologia Java em formato de API REST. Voltada para atender as demandas as sessões de votação em cooperativas, desde o processo de criação de pautas e votação destas. Onde todos os serviços devem trabalhar com JSON em suas chamadas e retornos.
 
- #### Stack do projeto
-  - Escrito em Java 8;
-  - Utilizando as facilidades e recursos framework Spring Boot/ Spring WebFlux;
-  - Lombok e MapStruct na classes para evitar o boilerplate do Java;
-  - Framework WebFlux integrado com MongoDB  para garantir a persistência dos dados (collections). Facilitando as operações CRUD (aumentando o nivel de desempenho e escalabilidade);
-  - Boas práticas de programação, utilizando Design Patterns (Builder);
-  - Testes unitários (junit, mockito, webclient test);
-  - Banco de dados MongoDB;
-  - Docker utilizando o compose;
-  
-  #### Visão Geral
+ #### Visão Geral
   
   A aplicaçao tem como objetivo disponibilizar endpoints para consulta de informações e operações à respeito de:
   - Votos de associados em cooperativas, onde ```cada associado possui um voto e as decisões são tomadas em assembleias, por votação. Gerenciar as sessões de votação``` de acordo com os respectivos requisitos: 
@@ -24,16 +14,24 @@
     - ```Receber votos dos associados em pautas (os votos são apenas 'Sim'/'Não'. Cada associado é identificado por um id único e pode votar apenas uma vez por pauta);``` 
     - ```Contabilizar os votos e dar o resultado da votação na pauta.``` 
   
-  #### Instruções Inicialização - Projeto
-    
-      1. Clone o repositório https://github.com/NecoDan/instant-cooperative-voting
-      
-      2. Ou faça o download do arquivo ZIP do projeto em https://github.com/NecoDan/instant-cooperative-voting
-          
-      3. Importar o projeto em sua IDE de preferência (lembre-se, projeto baseado em Spring & Maven)
-      
-      4. Buildar o projeto e executá-lo.
-    
+ #### Stack do projeto e decisões
+  - Escrito em Java 8;
+     - ```Uma das linguagens mais utilizadas no mundo, conhecida por ser robusta e facil de escalar;```
+     
+  - Utilizando as facilidades e recursos framework Spring / WebFlux;
+     - ```Framework com uma comunidade muito grande, facilita a integração com diversos outros serviços, tornando o desenvolvimento muito mais rápido;```
+     - ```A programação reativa permite usufruir melhor do poder de processamento disponivel, alem de ter por principios ser Resiliente, Elástica, Responsiva e Orientada a Mensagens```
+     
+  - Lombok e MapStruct na classes para evitar o boilerplate do Java;
+  - Framework WebFlux integrado com MongoDB  para garantir a persistência dos dados (collections). Facilitando as operações CRUD (aumentando o nivel de desempenho e escalabilidade);
+  - Boas práticas de programação, utilizando Design Patterns (Builder);
+  - Testes unitários (junit, mockito, webclient test);
+  - Maven como gerenciador de dependências
+  
+  - Banco de dados MongoDB;
+     - ```Banco de dados orientado a documentos facil de escalar e com driver que suporta programação reativa.```
+     
+  - Docker utilizando o compose;    
  
   #### Endpoints: 
   
