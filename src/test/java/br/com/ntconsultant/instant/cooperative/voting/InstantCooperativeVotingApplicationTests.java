@@ -9,5 +9,4 @@ class InstantCooperativeVotingApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

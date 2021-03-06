@@ -15,7 +15,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 /**
- * @author
+ * @author Daniel Santos
  */
 @ControllerAdvice
 @Slf4j
@@ -23,26 +23,26 @@ public class AdviceControllerConfig {
 
     @ExceptionHandler
     public ResponseEntity handleException(Throwable throwable) {
-        this.log.error(throwable.getMessage(), throwable);
+        log.error(throwable.getMessage(), throwable);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @ExceptionHandler
     public ResponseEntity handleException(HttpException throwable) {
-        this.log.error(throwable.getMessage(), throwable);
+        log.error(throwable.getMessage(), throwable);
         return ResponseEntity.status(throwable.getHttpStatus())
                 .body(getErrorApiResponse(throwable.getMessage(), null));
     }
 
     @ExceptionHandler
     public ResponseEntity handlerServerInputException(ServerWebInputException e) {
-        this.log.error(e.getMessage(), e);
+        log.error(e.getMessage(), e);
         return ResponseEntity.badRequest().body(getErrorApiResponse("missing a parameter.", e.getMessage()));
     }
 
     @ExceptionHandler
     public ResponseEntity handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-        this.log.error(e.getMessage(), e);
+        log.error(e.getMessage(), e);
         String mensagem = String.format("Argument '% s' must be valid '% s' but it is '% s'.",
                 e.getName(), e.getRequiredType().getSimpleName(), e.getValue());
         return new ResponseEntity<>(getErrorApiResponse(mensagem, e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -50,13 +50,13 @@ public class AdviceControllerConfig {
 
     @ExceptionHandler
     public ResponseEntity handleJsonProcessingException(JsonProcessingException e) {
-        this.log.error(e.getMessage(), e);
+        log.error(e.getMessage(), e);
         return new ResponseEntity<>(getErrorApiResponse("Invalid input JSON.", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     public ResponseEntity handleConstraintViolationException(ConstraintViolationException e) {
-        this.log.error(e.getMessage(), e);
+        log.error(e.getMessage(), e);
         String message = e.getConstraintViolations().stream()
                 .map(ConstraintViolation::getMessage)
                 .findFirst()
@@ -70,5 +70,4 @@ public class AdviceControllerConfig {
                 .details(details)
                 .build();
     }
-
 }

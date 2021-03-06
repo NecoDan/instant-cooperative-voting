@@ -8,7 +8,7 @@ import java.util.Optional;
  */
 public interface InitializeEndSession {
 
-    static final Integer VALUE_DEFAULT_SECONDS = 60;
+    Integer VALUE_DEFAULT_SECONDS = 60;
 
     static Instant start(Instant end) {
         return Optional.ofNullable(end).orElseGet(() -> Instant.now().plusSeconds(VALUE_DEFAULT_SECONDS));

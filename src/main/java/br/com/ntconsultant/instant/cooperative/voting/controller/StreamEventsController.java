@@ -2,6 +2,7 @@ package br.com.ntconsultant.instant.cooperative.voting.controller;
 
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
 import br.com.ntconsultant.instant.cooperative.voting.model.Vote;
+import br.com.ntconsultant.instant.cooperative.voting.service.IPautaReportService;
 import br.com.ntconsultant.instant.cooperative.voting.service.IPautaService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class StreamEventsController {
 
-    private final IPautaService pautaService;
+    private final IPautaReportService pautaReportService;
     private static final Integer DURATION_SECONDS = 5;
 
     @GetMapping(value = "/pautas/produces", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -32,15 +33,7 @@ public class StreamEventsController {
     public Flux<Tuple2<Long, Pauta>> getPautaByEvents() {
         log.info("Running event stream pautas...");
         Flux<Long> interval = Flux.interval(Duration.ofSeconds(DURATION_SECONDS));
-        Flux<Pauta> events = pautaService.findAll();
+        Flux<Pauta> events = pautaReportService.getAll();
         return Flux.zip(interval, events);
-    }
-
-    @GetMapping(value = "/pautas/votes/produces", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    @Operation(summary = "Searching all existing votes in pauta(s)", tags = "events-stream")
-    public Flux<Tuple2<Long, Vote>> getVotteByEvents() {
-        log.info("Running event stream votes...");
-        Flux<Long> interval = Flux.interval(Duration.ofSeconds(DURATION_SECONDS));
-        return null;
     }
 }

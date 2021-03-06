@@ -1,9 +1,10 @@
 package br.com.ntconsultant.instant.cooperative.voting.config;
 
 
-import br.com.ntconsultant.instant.cooperative.voting.dto.*;
+import br.com.ntconsultant.instant.cooperative.voting.dto.PautaModel;
+import br.com.ntconsultant.instant.cooperative.voting.dto.PautaModelRequest;
+import br.com.ntconsultant.instant.cooperative.voting.dto.VoteRequest;
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
-import br.com.ntconsultant.instant.cooperative.voting.model.Session;
 import br.com.ntconsultant.instant.cooperative.voting.model.Vote;
 import lombok.var;
 import org.modelmapper.ModelMapper;

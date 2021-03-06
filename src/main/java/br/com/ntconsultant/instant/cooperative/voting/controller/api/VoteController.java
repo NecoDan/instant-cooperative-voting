@@ -1,4 +1,4 @@
-package br.com.ntconsultant.instant.cooperative.voting.controller;
+package br.com.ntconsultant.instant.cooperative.voting.controller.api;
 
 import br.com.ntconsultant.instant.cooperative.voting.enums.TypePermittedCpfVote;
 import br.com.ntconsultant.instant.cooperative.voting.facade.ConsultCpFacade;

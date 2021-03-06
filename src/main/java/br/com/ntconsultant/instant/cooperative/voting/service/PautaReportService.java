@@ -21,4 +21,5 @@ public class PautaReportService implements IPautaReportService {
     public Mono<Pauta> getOneBy(String id) {
         return this.pautaService.findById(id);
     }
+
 }
