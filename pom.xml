@@ -28,6 +28,11 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.5.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webflux-core</artifactId>
+            <version>1.5.5</version>
+        </dependency>
 
         <!-- Spring Boot - WebFlux -->
         <dependency>

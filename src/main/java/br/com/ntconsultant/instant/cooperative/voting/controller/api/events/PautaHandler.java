@@ -1,12 +1,7 @@
-package br.com.ntconsultant.instant.cooperative.voting.controller.api.pautas;
+package br.com.ntconsultant.instant.cooperative.voting.controller.api.events;
 
 import br.com.ntconsultant.instant.cooperative.voting.dto.PautaModel;
-import br.com.ntconsultant.instant.cooperative.voting.dto.PermittedCpfVote;
-import br.com.ntconsultant.instant.cooperative.voting.enums.TypePermittedCpfVote;
-import br.com.ntconsultant.instant.cooperative.voting.exceptions.PautaException;
 import br.com.ntconsultant.instant.cooperative.voting.exceptions.PautaUnProcessableEntityException;
-import br.com.ntconsultant.instant.cooperative.voting.exceptions.ResourceStatusNotFoundException;
-import br.com.ntconsultant.instant.cooperative.voting.facade.ConsultCpFacade;
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
 import br.com.ntconsultant.instant.cooperative.voting.service.IGenerateVotingService;
 import br.com.ntconsultant.instant.cooperative.voting.service.IPautaReportService;
@@ -23,7 +18,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author Daniel Santos
@@ -37,8 +31,6 @@ public class PautaHandler {
     private final IPautaReportService pautaReportService;
     private final ModelMapper modelMapper;
 
-    // @ApiOperation(value = "Returns a list of all pautas.", response = PautaModel[].class)
-//    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returns a list of all pautas")})
     public Mono<ServerResponse> findAll(ServerRequest request) {
         log.info("Searching all existing Pauta(s)...");
         return ServerResponse.ok()
@@ -49,7 +41,6 @@ public class PautaHandler {
                         PautaModel.class);
     }
 
-    //  @ApiOperation(value = "Returns a specific pauta by id", response = PautaModel.class)
     public Mono<ServerResponse> findById(ServerRequest request) {
         log.info("Searching for an existing Pauta by Id ...");
         String id = request.pathVariable("id");
@@ -62,7 +53,6 @@ public class PautaHandler {
                         PautaModel.class);
     }
 
-    // @ApiOperation(value = "Call to create pauta.", response = PautaModel.class)
     public Mono<ServerResponse> save(ServerRequest request) {
         final Mono<Pauta> pauta = request.bodyToMono(Pauta.class);
         final Mono<Pauta> pautaSave = pauta.flatMap(generateVotingService::create)

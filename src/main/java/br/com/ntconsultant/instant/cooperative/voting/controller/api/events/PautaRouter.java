@@ -1,7 +1,6 @@
-package br.com.ntconsultant.instant.cooperative.voting.controller.api.pautas;
+package br.com.ntconsultant.instant.cooperative.voting.controller.api.events;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
@@ -12,10 +11,10 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 /**
  * @author Daniel Santos
  */
-@Configuration
+//@Configuration
 public class PautaRouter {
 
-    private static final String URI = "/v1/pautas";
+    private static final String URI = "/v1/events/pautas";
 
     @Bean
     public RouterFunction<ServerResponse> routeVoters(PautaHandler handler) {
