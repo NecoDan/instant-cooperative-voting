@@ -2,7 +2,7 @@
  ###### Copyright © 2021 NTCONSULT.
   Projeto em Spring Boot WebFlux de uma construção API RESTFul voltado a atender o desafio da [NTCONSULT](https://www.ntconsultcorp.com/).
    
-  Uma solução criada, utilizando a stack Java em formato de API REST. Voltada para atender as demandas as sessões de votação em cooperativas, desde o processo de criação de pautas e votação destas. Onde todos os serviços devem trabalhar com JSON em suas chamadas e retornos.
+  Uma solução criada, utilizando a tecnologia Java em formato de API REST. Voltada para atender as demandas as sessões de votação em cooperativas, desde o processo de criação de pautas e votação destas. Onde todos os serviços devem trabalhar com JSON em suas chamadas e retornos.
 
  #### Stack do projeto
   - Escrito em Java 8;
