@@ -37,7 +37,15 @@ public class PautaService implements IPautaService {
     }
 
     @Override
-    public Mono<Pauta> update(Pauta pauta) {
-        return this.pautaRepository.insert(pauta);
+    public Mono<Void> update(Pauta pauta) {
+        return findById(pauta.getId())
+                .flatMap(pautaRepository::save)
+                .then();
+    }
+
+    @Override
+    public Mono<Void> delete(String id) {
+        return findById(id)
+                .flatMap(pautaRepository::delete);
     }
 }

@@ -4,12 +4,10 @@ import br.com.ntconsultant.instant.cooperative.voting.exceptions.PautaNotFoundEx
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
 import br.com.ntconsultant.instant.cooperative.voting.model.Session;
 import br.com.ntconsultant.instant.cooperative.voting.repository.PautaRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
@@ -31,19 +29,21 @@ class PautaServiceTest {
     private PautaService pautaService;
     @Mock
     private PautaRepository pautaRepository;
+
     @Captor
     private ArgumentCaptor<Pauta> pautaArgumentCaptor;
 
     @Test
-    void deveSalvarUmaNovaPauta() {
-        Pauta pauta = getPautaWithoutSession("Votacao");
-        pautaService.save(pauta);
+    void mustSaveANewPauta() {
+        Pauta pautaSave = getPautaWithoutSession("Votacao");
+        pautaService.save(pautaSave);
         verify(pautaRepository, times(1)).save(pautaArgumentCaptor.capture());
-        assertEquals(pauta, pautaArgumentCaptor.getValue());
+        assertEquals(pautaSave, pautaArgumentCaptor.getValue());
     }
 
     @Test
-    void deveBuscaPautaRetornarnoError() {
+    @DisplayName("should search pauta findById returning error")
+    void shouldSearchPautaReturningError() {
         when(pautaRepository.findById(anyString()))
                 .thenReturn(Mono.empty());
 

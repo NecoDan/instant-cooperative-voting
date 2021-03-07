@@ -76,16 +76,15 @@ public class GenerateVotingService implements IGenerateVotingService {
                 .then();
     }
 
-    private Pauta processStatusEndSession(Pauta pauta) {
-        if (Objects.nonNull(pauta) && Objects.nonNull(pauta.getSession()) && pauta.getSession().isFinished()) {
-            pauta.generateTypeStatusSession();
-        }
-        return pauta;
+    @Override
+    public Pauta processVote(Pauta pauta, Vote vote) {
+        Session session = pauta.getSession();
+        validateParamsVoteProcessing(pauta, session, vote);
+        return pauta.vote(vote);
     }
 
-    private Pauta processVote(Pauta pauta, Vote vote) {
-        Session session = pauta.getSession();
-
+    @Override
+    public void validateParamsVoteProcessing(Pauta pauta, Session session, Vote vote) {
         if (Objects.isNull(session)) {
             throw new SessionNotFounException(pauta.getId());
         }
@@ -97,7 +96,5 @@ public class GenerateVotingService implements IGenerateVotingService {
         if (session.isRegisteredVoteForVoterBy(vote.getIdVoter())) {
             throw new VoterHasAlreadyVotedException(vote.getIdVoter());
         }
-
-        return pauta.vote(vote);
     }
 }

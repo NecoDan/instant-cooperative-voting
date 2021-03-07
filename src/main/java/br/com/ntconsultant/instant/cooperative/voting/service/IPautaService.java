@@ -15,5 +15,7 @@ public interface IPautaService {
 
     Mono<Pauta> save(Pauta pautaMono);
 
-    Mono<Pauta> update(Pauta pauta);
+    Mono<Void> update(Pauta pauta);
+
+    Mono<Void> delete(String id);
 }

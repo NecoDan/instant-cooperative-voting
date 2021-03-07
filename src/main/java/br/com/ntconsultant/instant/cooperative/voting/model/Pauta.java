@@ -2,13 +2,11 @@ package br.com.ntconsultant.instant.cooperative.voting.model;
 
 import br.com.ntconsultant.instant.cooperative.voting.enums.TypeStatusSession;
 import br.com.ntconsultant.instant.cooperative.voting.util.FormatterUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -27,6 +25,7 @@ import java.util.Optional;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@With
 @Slf4j
 @Document(collection = "pauta")
 public class Pauta implements IGenerateReleaseDate {
@@ -78,16 +77,19 @@ public class Pauta implements IGenerateReleaseDate {
         this.typeStatusSession = (isFinished()) ? TypeStatusSession.FINISHED : TypeStatusSession.OPENING;
     }
 
+    @JsonIgnore
     public boolean isFinished() {
         return Optional.ofNullable(session)
                 .map(Session::isFinished)
                 .orElse(false);
     }
 
+    @JsonIgnore
     public boolean isOpeningType() {
         return (Objects.nonNull(this.typeStatusSession) && this.typeStatusSession.isOpening());
     }
 
+    @JsonIgnore
     public boolean isFinishedType() {
         return (Objects.nonNull(this.typeStatusSession) && this.typeStatusSession.isFinished());
     }
