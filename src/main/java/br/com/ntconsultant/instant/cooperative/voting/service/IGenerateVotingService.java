@@ -21,5 +21,7 @@ public interface IGenerateVotingService {
 
     Pauta processVote(Pauta pauta, Vote vote);
 
+    void validateParams(Pauta pauta);
+
     void validateParamsVoteProcessing(Pauta pauta, Session session, Vote vote);
 }

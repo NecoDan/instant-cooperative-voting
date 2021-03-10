@@ -1,13 +1,17 @@
 package br.com.ntconsultant.instant.cooperative.voting.util;
 
 import br.com.ntconsultant.instant.cooperative.voting.dto.PautaModel;
+import br.com.ntconsultant.instant.cooperative.voting.dto.PautaModelRequest;
+import br.com.ntconsultant.instant.cooperative.voting.dto.VoteRequest;
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
 import br.com.ntconsultant.instant.cooperative.voting.model.Session;
+import br.com.ntconsultant.instant.cooperative.voting.model.Vote;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.time.Instant;
@@ -29,6 +33,15 @@ public class PautaCreator {
         pautaModel.setDtCreated(pauta.getDtCreated());
 
         return pautaModel;
+    }
+
+    public static ModelMapper createModelMapperForTests(){
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.createTypeMap(Pauta.class, PautaModel.class);
+        modelMapper.createTypeMap(PautaModelRequest.class, Pauta.class);
+        modelMapper.createTypeMap(PautaModelRequest.class, PautaModel.class);
+        modelMapper.createTypeMap(VoteRequest.class, Vote.class);
+        return modelMapper;
     }
 
     public static Pauta createPautaToBeSaved() {

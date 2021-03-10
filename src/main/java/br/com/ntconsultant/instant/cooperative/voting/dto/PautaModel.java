@@ -3,10 +3,7 @@ package br.com.ntconsultant.instant.cooperative.voting.dto;
 import br.com.ntconsultant.instant.cooperative.voting.enums.VoteType;
 import br.com.ntconsultant.instant.cooperative.voting.model.Vote;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -19,6 +16,7 @@ import java.util.stream.Collectors;
  * @author Daniel Santos
  */
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString

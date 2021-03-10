@@ -31,7 +31,7 @@ public class AdviceControllerConfig {
     public ResponseEntity handleException(HttpException throwable) {
         log.error(throwable.getMessage(), throwable);
         return ResponseEntity.status(throwable.getHttpStatus())
-                .body(getErrorApiResponse(throwable.getMessage(), null));
+                .body(getErrorApiResponse(throwable.getMessage(), throwable.getHttpStatus().getReasonPhrase()));
     }
 
     @ExceptionHandler

@@ -13,7 +13,7 @@ public class PautaUnProcessableEntityException extends HttpException {
 
     @Override
     public HttpStatus getHttpStatus() {
-        return HttpStatus.NOT_FOUND;
+        return HttpStatus.UNPROCESSABLE_ENTITY;
     }
 
 }

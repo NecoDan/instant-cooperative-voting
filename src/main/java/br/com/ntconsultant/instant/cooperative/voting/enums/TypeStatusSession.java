@@ -15,7 +15,7 @@ public enum TypeStatusSession {
 
     OPENING("OPENING", "1 - OPENING"),
 
-    FINISHED("FISHISHED", "2 - FINISHED");
+    FINISHED("FINISHED", "2 - FINISHED");
 
     private static final Map<String, TypeStatusSession> lookup;
 

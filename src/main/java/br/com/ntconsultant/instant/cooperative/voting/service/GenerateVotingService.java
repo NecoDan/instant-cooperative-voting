@@ -5,7 +5,6 @@ import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
 import br.com.ntconsultant.instant.cooperative.voting.model.Session;
 import br.com.ntconsultant.instant.cooperative.voting.model.Vote;
 import br.com.ntconsultant.instant.cooperative.voting.util.FormatterUtil;
-import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,20 +25,16 @@ public class GenerateVotingService implements IGenerateVotingService {
 
     @Override
     public Mono<Pauta> create(Pauta pauta) throws PautaException {
-        if (Objects.isNull(pauta)) {
-            String msg = "GenerateVotingService - Error: Trying to create Pauta. Pauta is invalid and/or nonexistent (null).";
-            log.error(msg);
-            throw new PautaUnProcessableEntityException(msg);
-        }
-
+        validateParams(pauta);
         pauta.generateDtCreated();
         pauta.generateTypeStatusSession();
-        return this.pautaService.save(pauta);
+        Mono<Pauta> pautaMono = this.pautaService.save(pauta);
+        return pautaMono;
     }
 
     @Override
     public Mono<Void> openingSessionVoting(String idPauta, Instant endSession) {
-        if (StringUtil.isNullOrEmpty(idPauta)) {
+        if (Objects.isNull(idPauta) || idPauta.isEmpty()) {
             String msg = "GenerateVotingService - Error: Trying to open session by Pauta Id is invalid.";
             log.error(msg);
             throw new PautaUnProcessableEntityException(msg);
@@ -63,7 +58,7 @@ public class GenerateVotingService implements IGenerateVotingService {
 
     @Override
     public Mono<Void> vote(String idPauta, Vote vote) {
-        if (StringUtil.isNullOrEmpty(idPauta)) {
+        if (Objects.isNull(idPauta) || idPauta.isEmpty()) {
             String msg = "GenerateVotingService - Error: Trying to vote by Pauta Id is invalid.";
             log.error(msg);
             throw new PautaUnProcessableEntityException(msg);
@@ -81,6 +76,21 @@ public class GenerateVotingService implements IGenerateVotingService {
         Session session = pauta.getSession();
         validateParamsVoteProcessing(pauta, session, vote);
         return pauta.vote(vote);
+    }
+
+    @Override
+    public void validateParams(Pauta pauta) {
+        if (Objects.isNull(pauta)) {
+            String msg = "GenerateVotingService - Error: Trying to create Pauta. The Pauta title is invalid and / or not informed..";
+            log.error(msg);
+            throw new PautaUnProcessableEntityException(msg);
+        }
+
+        if (Objects.isNull(pauta.getTitle()) || pauta.getTitle().isEmpty()) {
+            String msg = "GenerateVotingService - Error: Trying to create Pauta. Pauta is invalid and/or nonexistent (null).";
+            log.error(msg);
+            throw new PautaUnProcessableEntityException(msg);
+        }
     }
 
     @Override

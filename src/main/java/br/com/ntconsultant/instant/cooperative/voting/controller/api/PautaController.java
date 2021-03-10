@@ -42,7 +42,7 @@ public class PautaController {
         log.info("Call to create pauta: {}.", pautaModelRequest);
 
         return generateVotingService.create(toPautaFrom(pautaModelRequest))
-                .map(this::toPautaModelCreate)
+                .map(p -> toPautaModelCreate(p))
                 .map(pautaResponse -> ResponseEntity.status(HttpStatus.CREATED)
                         .body(pautaResponse))
                 .doOnSuccess(pautaResponse -> log.info("Pauta criada com sucesso!"));
@@ -90,8 +90,8 @@ public class PautaController {
                 .doOnSuccess(p -> log.info("Returning a specific Pauta by {Id} =" + idPauta));
     }
 
-    private PautaModel toPautaModel(Pauta pauta) {
-        PautaModel pautaModel = this.modelMapper.map(pauta, PautaModel.class);
+    public PautaModel toPautaModel(Pauta pauta) {
+        PautaModel pautaModel = toPautaModelCreating(pauta);
 
         pautaModel.setStatus((Objects.isNull(pauta.getTypeStatusSession())) ? "" : pauta.getTypeStatusSession().getCode());
         pautaModel.generateVoteTotalizers(Objects.isNull(pauta.getSession()) ? Collections.emptyList() : pauta.getSession().getVotes());
@@ -99,12 +99,16 @@ public class PautaController {
         return pautaModel;
     }
 
-    private PautaModel toPautaModelCreate(Pauta pauta) {
+    public PautaModel toPautaModelCreate(Pauta pauta) {
         log.info("Call to create pauta: {}.", pauta);
+        return toPautaModelCreating(pauta);
+    }
+
+    public PautaModel toPautaModelCreating(Pauta pauta) {
         return this.modelMapper.map(pauta, PautaModel.class);
     }
 
-    private Pauta toPautaFrom(PautaModelRequest pautaModelRequest) {
+    public Pauta toPautaFrom(PautaModelRequest pautaModelRequest) {
         return this.modelMapper.map(pautaModelRequest, Pauta.class);
     }
 
