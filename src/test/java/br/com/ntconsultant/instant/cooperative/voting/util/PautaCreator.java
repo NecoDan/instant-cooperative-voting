@@ -22,6 +22,10 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * @author Daniel Santos
+ * @since 07/03/2021
+ */
 public class PautaCreator {
 
     public static PautaModel createValidPautaModel(Pauta pauta) {

@@ -1,6 +1,7 @@
 package br.com.ntconsultant.instant.cooperative.voting.model;
 
 import br.com.ntconsultant.instant.cooperative.voting.enums.VoteType;
+import br.com.ntconsultant.instant.cooperative.voting.util.FormatterUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,11 @@ public class Vote implements IGenerateReleaseDate{
 
     public Vote generateDtCreatedThis() {
         generateDtCreated();
+        return this;
+    }
+
+    public Vote removeNonNumericCharactersIdVoter(){
+        this.idVoter = FormatterUtil.removeNonNumericCharacters(this.idVoter);
         return this;
     }
 }

@@ -113,6 +113,7 @@ public class PautaController {
     }
 
     private Vote toVoteFrom(VoteRequest voteRequest) {
-        return this.modelMapper.map(voteRequest, Vote.class);
+        Vote vote = this.modelMapper.map(voteRequest, Vote.class);
+        return vote.removeNonNumericCharactersIdVoter();
     }
 }

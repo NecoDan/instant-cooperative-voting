@@ -36,7 +36,7 @@ public class ConsultCpFacade {
             return Optional.of(permittedCpfVote);
         }catch (Exception e){
             log.error("Error get permitted cpf to vote for cpf id | {}", cpf);
-            throw new VoterNotFoundException("Error get permitted cpf to vote for cpf" + cpf);
+            throw new VoterNotFoundException("Error get permitted cpf to vote for cpf " + cpf);
         }
     }
 

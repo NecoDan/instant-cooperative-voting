@@ -11,6 +11,7 @@ import br.com.ntconsultant.instant.cooperative.voting.service.GenerateVotingServ
 import br.com.ntconsultant.instant.cooperative.voting.service.PautaReportService;
 import br.com.ntconsultant.instant.cooperative.voting.service.PautaService;
 import br.com.ntconsultant.instant.cooperative.voting.util.PautaCreator;
+import br.com.ntconsultant.instant.cooperative.voting.util.RandomUtil;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
@@ -39,6 +40,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 
+/**
+ * @author Daniel Santos
+ * @since 07/03/2021
+ */
 @WebFluxTest
 @ContextConfiguration(classes = TestConfiguration.class)
 @AutoConfigureWebTestClient(timeout = "10000")
@@ -253,7 +258,7 @@ class PautaControllerWebClientTest {
     @Test
     @DisplayName("save update an pauta when voting when successful")
     void saveUpdatePautaVoteWhenSuccessful() {
-        Integer minutes = 60*10;
+        Integer minutes = 60 * RandomUtil.generateRandomValueUntil(60);
 
         VoteRequest voteRequest = VoteRequest.builder()
                 .idVoter("41051691060")

@@ -21,10 +21,9 @@ import java.util.UUID;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * @author Daniel Santos
+ * @since 07/03/2021
  */
 @ExtendWith(SpringExtension.class)
 class PautaReportServiceTest {

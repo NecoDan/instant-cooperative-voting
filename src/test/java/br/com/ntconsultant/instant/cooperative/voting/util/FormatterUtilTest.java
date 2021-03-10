@@ -8,6 +8,10 @@ import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Daniel Santos
+ * @since 06/03/2021
+ */
 class FormatterUtilTest {
 
     @Test

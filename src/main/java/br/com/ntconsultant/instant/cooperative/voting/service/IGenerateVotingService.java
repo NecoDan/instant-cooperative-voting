@@ -17,6 +17,8 @@ public interface IGenerateVotingService {
 
     Mono<Void> openingSessionVoting(String idPauta, Instant endSession);
 
+    Pauta processBeginSession(Pauta pauta, Instant endSession);
+
     Mono<Void> vote(String idPauta, Vote vote);
 
     Pauta processVote(Pauta pauta, Vote vote);

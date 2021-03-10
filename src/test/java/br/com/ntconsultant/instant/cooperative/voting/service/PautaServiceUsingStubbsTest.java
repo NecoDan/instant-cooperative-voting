@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author Daniel Santos
+ * @since 07/03/2021
  */
 @ExtendWith(SpringExtension.class)
 class PautaServiceUsingStubbsTest {

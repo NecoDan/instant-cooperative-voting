@@ -21,6 +21,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * @author Daniel Santos
+ * @since 05/03/2021
  */
 @ExtendWith(MockitoExtension.class)
 class PautaServiceTest {

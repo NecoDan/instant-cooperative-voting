@@ -44,5 +44,15 @@ public final class FormatterUtil {
     public static String formatterLocalDateTimeFrom(Instant instant) {
         return formatterLocalDateTimeBy(DateUtil.getLocalDateTimeFrom(instant));
     }
+
+    public static String formatterLocalDateFrom(Instant instant) {
+        return formatterLocalDateBy(DateUtil.getLocalDateFrom(instant));
+    }
+
+    public static String removeNonNumericCharacters(String str) {
+        if (Objects.isNull(str) || str.isEmpty())
+            return "";
+        return str.replaceAll("[^\\d]", "");
+    }
 }
 

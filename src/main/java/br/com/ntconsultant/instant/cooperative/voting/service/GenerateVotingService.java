@@ -28,8 +28,7 @@ public class GenerateVotingService implements IGenerateVotingService {
         validateParams(pauta);
         pauta.generateDtCreated();
         pauta.generateTypeStatusSession();
-        Mono<Pauta> pautaMono = this.pautaService.save(pauta);
-        return pautaMono;
+        return this.pautaService.save(pauta);
     }
 
     @Override
@@ -49,13 +48,6 @@ public class GenerateVotingService implements IGenerateVotingService {
                 .then();
     }
 
-    private Pauta processBeginSession(Pauta pauta, Instant endSession) {
-        if (Objects.nonNull(pauta.getSession())) {
-            throw new ExistingSessionException(pauta.getId());
-        }
-        return pauta.beginSession(endSession);
-    }
-
     @Override
     public Mono<Void> vote(String idPauta, Vote vote) {
         if (Objects.isNull(idPauta) || idPauta.isEmpty()) {
@@ -69,6 +61,14 @@ public class GenerateVotingService implements IGenerateVotingService {
                 .map(pauta -> processVote(pauta, vote))
                 .flatMap(pautaService::save)
                 .then();
+    }
+
+    @Override
+    public Pauta processBeginSession(Pauta pauta, Instant endSession) {
+        if (Objects.nonNull(pauta.getSession())) {
+            throw new ExistingSessionException(pauta.getId());
+        }
+        return pauta.beginSession(endSession);
     }
 
     @Override
