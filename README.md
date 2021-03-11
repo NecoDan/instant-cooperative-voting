@@ -35,8 +35,11 @@
   
   #### Instruções inicialização e execução - (aplicação e database)
   ###### Utilizando docker-compose com MongoDB:
-   Executar comando ```docker-compose up``` inicializará uma instância do MongoDB, nesse momento será criado apenas uma collection denominado ```votacao``` no banco de dados. 
-  <br><br>Com a finalidade de gerenciar, registrar e efetuar as operações relacionadas as pautas/votações. Em seguida a aplicação do ```instant-cooperative-voting``` pode ser executada e inicializada.
+   Executar os comandos: <br><br>
+   ```docker-compose build```<br> 
+   ```docker-compose up```<br><br> 
+   Logo após, inicializará a aplicação ```instant-cooperative-voting```, junto com uma instância do MongoDB dockerizada (nesse momento será criado apenas uma collection denominado ```votacao``` no banco de dados).
+   Com a finalidade de gerenciar, registrar e efetuar as operações relacionadas as pautas/votações.
   <br> 
   ###### Utilizando diretamente o jar:
   ```mvn clean install```<br>
