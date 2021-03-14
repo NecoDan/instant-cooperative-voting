@@ -19,6 +19,10 @@ public class ProducerVotingResultAsyncGateway implements IProducerVotingResultAs
     private final KafkaTemplate<String, String> kafkaTemplateVotingResult;
     private final ObjectMapper objectMapper;
 
+
+
+
+
     @Override
     public void send(Pauta pauta) {
         final String message = toJsonStringFrom(pauta);
