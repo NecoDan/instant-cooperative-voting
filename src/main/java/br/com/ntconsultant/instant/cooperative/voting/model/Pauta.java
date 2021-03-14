@@ -1,6 +1,7 @@
 package br.com.ntconsultant.instant.cooperative.voting.model;
 
 import br.com.ntconsultant.instant.cooperative.voting.enums.TypeStatusSession;
+import br.com.ntconsultant.instant.cooperative.voting.enums.VoteType;
 import br.com.ntconsultant.instant.cooperative.voting.util.FormatterUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,8 +15,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -46,11 +47,13 @@ public class Pauta implements IGenerateReleaseDate {
         this.dtCreated = IGenerateReleaseDate.generateDtRelease();
     }
 
+    @JsonIgnore
     public Pauta generateDtCreatedThis() {
         generateDtCreated();
         return this;
     }
 
+    @JsonIgnore
     public Pauta beginSession(Instant fim) {
         session = Session.start(fim);
         log.info("Session: to open session {} with the date {}.", FormatterUtil.formatterLocalDateTimeFrom(session.getEnd()), FormatterUtil.formatterLocalDateTimeBy(session.getDtCreated()));
@@ -58,6 +61,7 @@ public class Pauta implements IGenerateReleaseDate {
         return this;
     }
 
+    @JsonIgnore
     public Pauta vote(Vote vote) {
         session.addVote(vote);
         return this;
@@ -92,6 +96,29 @@ public class Pauta implements IGenerateReleaseDate {
     @JsonIgnore
     public boolean isFinishedType() {
         return (Objects.nonNull(this.typeStatusSession) && this.typeStatusSession.isFinished());
+    }
+
+    @JsonIgnore
+    public Map<VoteType, Long> generateVoteTotalizers() {
+        return (isInvalidVotes())
+                ? Collections.emptyMap()
+                : this.session.getVotes().stream().collect(Collectors.groupingBy(Vote::getVoteType, Collectors.counting()));
+    }
+
+    @JsonIgnore
+    public Pauta generateVoteTotalizersTo() {
+        generateVoteTotalizers();
+        return this;
+    }
+
+    @JsonIgnore
+    public boolean isInvalidVotes() {
+        return (Objects.isNull(this.session) || Objects.isNull(this.session.getVotes()) || this.session.getVotes().isEmpty());
+    }
+
+    @JsonIgnore
+    public String toStringTypeStatusSession() {
+        return (Objects.isNull(this.typeStatusSession)) ? "" : this.typeStatusSession.getCode();
     }
 
     @Override

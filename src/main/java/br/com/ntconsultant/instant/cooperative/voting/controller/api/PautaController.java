@@ -20,8 +20,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.Objects;
 
 /**
  * @author Daniel Santos
@@ -42,7 +40,7 @@ public class PautaController {
         log.info("Call to create pauta: {}.", pautaModelRequest);
 
         return generateVotingService.create(toPautaFrom(pautaModelRequest))
-                .map(p -> toPautaModelCreate(p))
+                .map(this::toPautaModelCreate)
                 .map(pautaResponse -> ResponseEntity.status(HttpStatus.CREATED)
                         .body(pautaResponse))
                 .doOnSuccess(pautaResponse -> log.info("Pauta criada com sucesso!"));
@@ -92,10 +90,8 @@ public class PautaController {
 
     public PautaModel toPautaModel(Pauta pauta) {
         PautaModel pautaModel = toPautaModelCreating(pauta);
-
-        pautaModel.setStatus((Objects.isNull(pauta.getTypeStatusSession())) ? "" : pauta.getTypeStatusSession().getCode());
-        pautaModel.generateVoteTotalizers(Objects.isNull(pauta.getSession()) ? Collections.emptyList() : pauta.getSession().getVotes());
-
+        pautaModel.setStatus(pauta.toStringTypeStatusSession());
+        pautaModel.setVoteModels(pauta.generateVoteTotalizers());
         return pautaModel;
     }
 

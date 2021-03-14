@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(prefix = "api")
 public class ApiProperties {
+
     private String cpfConsultedUrl;
 
     public String getUrlCpfConsultedBy(String cpf){

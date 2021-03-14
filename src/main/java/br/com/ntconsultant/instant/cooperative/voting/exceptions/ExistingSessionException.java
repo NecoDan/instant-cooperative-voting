@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
  */
 public class ExistingSessionException extends HttpException {
 
+    private static final long serialVersionUID = 2976467110994522770L;
+
     public ExistingSessionException(String message) {
         super(String.format("There is already a voting session for the pauta: %S", message));
     }

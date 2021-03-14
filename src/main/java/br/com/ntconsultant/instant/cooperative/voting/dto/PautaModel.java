@@ -37,8 +37,6 @@ public class PautaModel {
     public void generateVoteTotalizers(List<Vote> votesList) {
         if (Objects.isNull(votesList) || votesList.isEmpty())
             return;
-
-        voteModels = votesList.stream()
-                .collect(Collectors.groupingBy(Vote::getVoteType, Collectors.counting()));
+        voteModels = votesList.stream().collect(Collectors.groupingBy(Vote::getVoteType, Collectors.counting()));
     }
 }
