@@ -1,9 +1,7 @@
 package br.com.ntconsultant.instant.cooperative.voting.controller;
 
 import br.com.ntconsultant.instant.cooperative.voting.model.Pauta;
-import br.com.ntconsultant.instant.cooperative.voting.model.Vote;
 import br.com.ntconsultant.instant.cooperative.voting.service.IPautaReportService;
-import br.com.ntconsultant.instant.cooperative.voting.service.IPautaService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

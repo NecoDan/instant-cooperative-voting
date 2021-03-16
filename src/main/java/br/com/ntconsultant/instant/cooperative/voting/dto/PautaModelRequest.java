@@ -1,6 +1,9 @@
 package br.com.ntconsultant.instant.cooperative.voting.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author Daniel Santos
